@@ -10,5 +10,5 @@ runs:
   steps:
     - name: Slack post
       run: |
-        echo '${{ inputs.text }}'
+        echo '${{ inputs.text }}' >> $GITHUB_STEP_SUMMARY
       shell: bash
