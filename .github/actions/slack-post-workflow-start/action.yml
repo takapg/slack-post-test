@@ -1,0 +1,9 @@
+name: Slack post workflow start
+
+runs:
+  using: "composite"
+  steps:
+    - name: Slack post
+      uses: ./.github/actions/slack-post
+      with:
+        text: aaa
