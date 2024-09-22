@@ -16,3 +16,9 @@ jobs:
 
       - name: Slack post workflow start
         uses: ./.github/actions/slack-post-workflow-start
+
+      - name: Dummy step 1
+        run: echo 'dummy'
+
+      - name: Slack post workflow end
+        uses: ./.github/actions/slack-post-workflow-end
