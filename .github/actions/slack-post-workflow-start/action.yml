@@ -14,6 +14,7 @@ runs:
       with:
         text: '[${{ github.event.inputs.env }}] ${{ github.workflow }} を開始しました'
         color-code: blue
+
     - name: Set ts
       run: |
         echo 'ts=${{ steps.slack-post.outputs.ts }}' >> $GITHUB_OUTPUT
