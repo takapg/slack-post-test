@@ -1,0 +1,14 @@
+name: Single job
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        required: true
+        type: string
+
+jobs:
+  job-1:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo '${{ toJSON(github) }}'
