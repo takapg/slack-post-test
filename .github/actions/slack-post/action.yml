@@ -7,6 +7,13 @@ inputs:
   color-code:
     required: true
     type: string
+  thread_ts:
+    required: false
+    type: string
+  reply_broadcast:
+    required: false
+    type: boolean
+    default: false
 
 outputs:
   ts: # timestamp of message posted
