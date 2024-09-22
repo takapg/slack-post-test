@@ -4,14 +4,15 @@ inputs:
   text:
     required: true
     type: string
+  color-code:
+    required: true
+    type: string
 
 runs:
   using: "composite"
   steps:
     - name: Slack post
       run: |
-        echo '
-        <div style="color: #FF5722;">
-        ${{ inputs.text }}
-        </div>' >> $GITHUB_STEP_SUMMARY
+        echo 'color: ${{ inputs.color-code }}
+        ${{ inputs.text }}' >> $GITHUB_STEP_SUMMARY
       shell: bash
