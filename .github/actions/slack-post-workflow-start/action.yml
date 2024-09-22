@@ -1,10 +1,19 @@
 name: Slack post workflow start
 
+outputs:
+  ts: # timestamp of message posted
+    description: 'The timestamp on the message that was posted into Slack when using bot token'
+
 runs:
   using: "composite"
   steps:
     - name: Slack post
+      id: slack-post
       uses: ./.github/actions/slack-post
       with:
         text: '[${{ github.event.inputs.env }}] ${{ github.workflow }} を開始しました'
         color-code: blue
+    - name: Set ts
+      run: |
+        echo 'ts=${{ steps.slack-post.outputs.ts }}' >> $GITHUB_OUTPUT
+      shell: bash
