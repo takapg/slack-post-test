@@ -6,4 +6,4 @@ runs:
     - name: Slack post
       uses: ./.github/actions/slack-post
       with:
-        text: aaa
+        text: '[${{ github.event.inputs.env }}] ${{ github.workflow }} を開始しました'
