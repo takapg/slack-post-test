@@ -7,5 +7,5 @@ runs:
       id: slack-post
       uses: ./.github/actions/slack-post
       with:
-        text: '[${{ github.event.inputs.env }}] ${{ github.workflow }} が成功しました'
+        text: '[${{ github.event.inputs.env }}] ${{ github.workflow }} が完了しました'
         color-code: green
