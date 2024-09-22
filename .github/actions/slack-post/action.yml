@@ -1,0 +1,14 @@
+name: Slack post
+
+inputs:
+  text:
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - name: Slack post
+      run: |
+        echo '${{ inputs.text }}'
+      shell: bash
