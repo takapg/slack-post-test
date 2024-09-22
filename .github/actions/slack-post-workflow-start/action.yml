@@ -7,3 +7,4 @@ runs:
       uses: ./.github/actions/slack-post
       with:
         text: '[${{ github.event.inputs.env }}] ${{ github.workflow }} を開始しました'
+        color-code: blue
