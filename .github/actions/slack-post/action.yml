@@ -11,11 +11,13 @@ inputs:
 outputs:
   ts: # timestamp of message posted
     description: 'The timestamp on the message that was posted into Slack when using bot token'
+    value: ${{ steps.slack-post.outputs.ts }}
 
 runs:
   using: "composite"
   steps:
     - name: Slack post
+      id: slack-post
       run: |
         echo 'color: ${{ inputs.color-code }}
         ${{ inputs.text }}' >> $GITHUB_STEP_SUMMARY
