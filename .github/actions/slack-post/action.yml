@@ -11,7 +11,7 @@ runs:
     - name: Slack post
       run: |
         echo '
-        <div style="border-left: 10px solid #FF5722;">
+        <div style="color: #FF5722;">
         ${{ inputs.text }}
         </div>' >> $GITHUB_STEP_SUMMARY
       shell: bash
