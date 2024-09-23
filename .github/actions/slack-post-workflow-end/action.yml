@@ -12,8 +12,9 @@ runs:
   using: "composite"
   steps:
     - name: Set success environment variables
-      if: inputs.success == 'true'
+      # if: inputs.success == 'true'
       run: |
+        echo '${{ github }}'
         echo 'RESULT_MESSAGE=成功しました' >> $GITHUB_ENV
         echo 'COLOR_CODE=green' >> $GITHUB_ENV
       shell: bash
