@@ -3,25 +3,22 @@ name: Slack post workflow end
 runs:
   using: "composite"
   steps:
-    - name: Set parameters
-      id: set-parameters
+    - name: Set success environment variables
+      if: success()
       run: |
-        echo ''
-        if '${{ failure() }}'; then
-          result_message='失敗しました'
-          color_code='red'
-        else
-          result_message='成功しました'
-          color_code='green'
-        fi
+        echo 'RESULT_MESSAGE=成功しました' >> $GITHUB_ENV
+        echo 'COLOR_CODE=green' >> $GITHUB_ENV
+      shell: bash
 
-        echo 'result_message=result-message' >> $GITHUB_OUTPUT
-        echo 'color_code=color-code' >> $GITHUB_OUTPUT
+    - name: Set failure environment variables
+      if: failure()
+      run: |
+        echo 'RESULT_MESSAGE=失敗しました' >> $GITHUB_ENV
+        echo 'COLOR_CODE=red' >> $GITHUB_ENV
       shell: bash
 
     - name: Slack post
-      id: slack-post
       uses: ./.github/actions/slack-post
       with:
-        text: '[${{ github.event.inputs.env }}] ${{ github.workflow }} が${{ steps.set-parameters.outputs.result-message }}しました'
-        color-code: '${{ steps.set-parameters.outputs.color-code }}'
+        text: '[${{ github.event.inputs.env }}] ${{ github.workflow }} が${{ env.RESULT_MESSAGE }}しました'
+        color-code: '${{ env.COLOR_CODE }}'
