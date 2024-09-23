@@ -15,7 +15,7 @@ runs:
       # if: inputs.success == 'true'
       run: |
         # echo '${{ toJSON(jobs) }}'
-        gh run view '${{ github.run_id }}' --json jobs
+        gh run view '${{ github.run_id }}' --json status
         echo 'RESULT_MESSAGE=成功しました' >> $GITHUB_ENV
         echo 'COLOR_CODE=green' >> $GITHUB_ENV
       env:
