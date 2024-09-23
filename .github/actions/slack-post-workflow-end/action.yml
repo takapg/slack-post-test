@@ -14,9 +14,12 @@ runs:
     - name: Set success environment variables
       # if: inputs.success == 'true'
       run: |
-        echo '${{ toJSON(jobs) }}'
+        # echo '${{ toJSON(jobs) }}'
+        gh run view '${{ github.run_id }}' --json jobs
         echo 'RESULT_MESSAGE=成功しました' >> $GITHUB_ENV
         echo 'COLOR_CODE=green' >> $GITHUB_ENV
+      env:
+        GH_TOKEN: ${{ github.token }}
       shell: bash
 
     - name: Set failure environment variables
