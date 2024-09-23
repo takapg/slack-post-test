@@ -19,7 +19,7 @@ runs:
       shell: bash
 
     - name: Set failure environment variables
-      if: failure()
+      if: inputs.failure
       run: |
         echo 'RESULT_MESSAGE=失敗しました' >> $GITHUB_ENV
         echo 'COLOR_CODE=red' >> $GITHUB_ENV
