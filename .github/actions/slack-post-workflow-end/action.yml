@@ -6,19 +6,27 @@ runs:
     - name: Set parameters
       id: set-parameters
       run: |
-        echo '${{ toJSON(job) }}'
-        gh run view '${{ github.run_id }}' --json jobs | jq -r '[.jobs[].conclusion | select(. != "")]'
-        sleep 3
-        step_conclusions=$(
+        job_conclusions=$(
           gh run view '${{ github.run_id }}' --json jobs \
-            | jq -c '[.jobs[].steps[].conclusion]'
+            | jq -c '[.jobs[].conclusion | select(. != "")]'
         )
-        echo "step_conclusions: ${step_conclusions}"
 
-        if [[ "${step_conclusions}" =~ 'failure' ]]; then
+        if [ "${job_conclusions}" == '[]' ]; then
+          workflow_conclusion='${{ job.status }}'
+        else
+          if [[ "${job_conclusions}" =~ 'failure' ]]; then
+            workflow_conclusion=failure
+          elif [[ "${job_conclusions}" =~ 'canceled' ]]; then
+            workflow_conclusion=canceled
+          else
+            workflow_conclusion=success
+          fi
+        fi
+
+        if [ "${workflow_conclusion}" == 'failure' ]; then
           echo 'result-message=失敗しました' >> $GITHUB_OUTPUT
           echo 'color-code=red' >> $GITHUB_OUTPUT
-        elif [[ "${step_conclusions}" =~ 'canceled' ]]; then
+        elif [ "${workflow_conclusion}" == 'canceled' ]; then
           echo 'result-message=キャンセルされました' >> $GITHUB_OUTPUT
           echo 'color-code=gray' >> $GITHUB_OUTPUT
         else
