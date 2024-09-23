@@ -19,7 +19,7 @@ runs:
 
     - name: test
       run: |
-        gh run view '${{ github.run_id }}'
+        gh run view '${{ github.run_id }}' --json status,conclusion
       env:
         GH_TOKEN: ${{ github.token }}
       shell: bash
