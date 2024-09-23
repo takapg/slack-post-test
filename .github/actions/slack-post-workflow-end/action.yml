@@ -3,9 +3,25 @@ name: Slack post workflow end
 runs:
   using: "composite"
   steps:
+    - name: Set parameters
+      id: set-parameters
+      run: |
+        echo ''
+        if '${{ failure() }}'; then
+          result_message='失敗しました'
+          color_code='red'
+        else
+          result_message='成功しました'
+          color_code='green'
+        fi
+
+        echo 'result_message=result-message' >> $GITHUB_OUTPUT
+        echo 'color_code=color-code' >> $GITHUB_OUTPUT
+      shell: bash
+
     - name: Slack post
       id: slack-post
       uses: ./.github/actions/slack-post
       with:
-        text: '[${{ github.event.inputs.env }}] ${{ github.workflow }} が完了しました'
-        color-code: green
+        text: '[${{ github.event.inputs.env }}] ${{ github.workflow }} が${{ steps.set-parameters.outputs.result-message }}しました'
+        color-code: '${{ steps.set-parameters.outputs.color-code }}'
