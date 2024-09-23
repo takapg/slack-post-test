@@ -6,6 +6,7 @@ runs:
     - name: Set parameters
       id: set-parameters
       run: |
+        gh run view '${{ github.run_id }}' --json jobs | jq
         step_conclusions=$(
           gh run view '${{ github.run_id }}' --json jobs \
             | jq -c '[.jobs[].steps[].conclusion]'
