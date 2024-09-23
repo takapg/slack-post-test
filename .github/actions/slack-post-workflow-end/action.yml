@@ -17,6 +17,11 @@ runs:
         echo 'COLOR_CODE=red' >> $GITHUB_ENV
       shell: bash
 
+    - name: test
+      run: |
+        gh run view '${{ github.run_id }}'
+      shell: bash
+
     - name: Slack post
       uses: ./.github/actions/slack-post
       with:
