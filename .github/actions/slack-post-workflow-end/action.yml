@@ -20,6 +20,8 @@ runs:
     - name: test
       run: |
         gh run view '${{ github.run_id }}'
+      env:
+        GH_TOKEN: ${{ github.token }}
       shell: bash
 
     - name: Slack post
