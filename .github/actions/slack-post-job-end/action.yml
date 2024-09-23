@@ -1,0 +1,24 @@
+name: Slack post job end
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set parameters
+      id: set-parameters
+      run: |
+        if [ "${job.status}" == 'failure' ]; then
+          echo 'result-message=失敗しました' >> $GITHUB_OUTPUT
+          echo 'color-code=red' >> $GITHUB_OUTPUT
+        elif [ "${job.status}" == 'canceled' ]; then
+          echo 'result-message=キャンセルされました' >> $GITHUB_OUTPUT
+          echo 'color-code=gray' >> $GITHUB_OUTPUT
+        else
+          echo 'result-message=成功しました' >> $GITHUB_OUTPUT
+          echo 'color-code=green' >> $GITHUB_OUTPUT
+        fi
+
+    - name: Slack post
+      uses: ./.github/actions/slack-post
+      with:
+        text: '${{ github.job }} が${{ steps.set-parameters.outputs.result-message }}'
+        color-code: '${{ steps.set-parameters.outputs.color-code }}'
