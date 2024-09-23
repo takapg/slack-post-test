@@ -16,6 +16,7 @@ runs:
           echo 'result-message=成功しました' >> $GITHUB_OUTPUT
           echo 'color-code=green' >> $GITHUB_OUTPUT
         fi
+      shell: bash
 
     - name: Slack post
       uses: ./.github/actions/slack-post
