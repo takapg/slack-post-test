@@ -1,36 +1,32 @@
 name: Slack post workflow end
 
-inputs:
-  success:
-    required: true
-    type: boolean
-  failure:
-    required: true
-    type: boolean
-
 runs:
   using: "composite"
   steps:
-    - name: Set success environment variables
-      # if: inputs.success == 'true'
+    - name: Set parameters
+      id: set-parameters
       run: |
-        gh run view '${{ github.run_id }}' --json jobs \
-          | jq -r '[.jobs[].steps[].conclusion]'
-        echo 'RESULT_MESSAGE=成功しました' >> $GITHUB_ENV
-        echo 'COLOR_CODE=green' >> $GITHUB_ENV
+        step_conclusions=$(
+          gh run view '${{ github.run_id }}' --json jobs \
+            | jq -c '[.jobs[].steps[].conclusion]'
+        )
+
+        if [[ "${step_conclusions}" =~ 'failure' ]]; then
+          echo 'result-message=失敗しました' >> $GITHUB_OUTPUT
+          echo 'color-code=red' >> $GITHUB_OUTPUT
+        elif [[ "${step_conclusions}" =~ 'canceled' ]]; then
+          echo 'result-message=キャンセルされました' >> $GITHUB_OUTPUT
+          echo 'color-code=gray' >> $GITHUB_OUTPUT
+        else
+          echo 'result-message=成功しました' >> $GITHUB_OUTPUT
+          echo 'color-code=green' >> $GITHUB_OUTPUT
+        fi
       env:
         GH_TOKEN: ${{ github.token }}
-      shell: bash
-
-    - name: Set failure environment variables
-      if: inputs.failure == 'true'
-      run: |
-        echo 'RESULT_MESSAGE=失敗しました' >> $GITHUB_ENV
-        echo 'COLOR_CODE=red' >> $GITHUB_ENV
       shell: bash
 
     - name: Slack post
       uses: ./.github/actions/slack-post
       with:
-        text: '[${{ github.event.inputs.env }}] ${{ github.workflow }} が${{ env.RESULT_MESSAGE }}'
-        color-code: '${{ env.COLOR_CODE }}'
+        text: '[${{ github.event.inputs.env }}] ${{ github.workflow }} が${{ steps.set-parameters.outputs.result-message }}'
+        color-code: '${{ steps.set-parameters.outputs.color-code }}'
