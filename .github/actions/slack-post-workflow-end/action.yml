@@ -1,10 +1,18 @@
 name: Slack post workflow end
 
+inputs:
+  success:
+    required: true
+    type: boolean
+  failure:
+    required: true
+    type: boolean
+
 runs:
   using: "composite"
   steps:
     - name: Set success environment variables
-      if: success()
+      if: inputs.success
       run: |
         echo 'RESULT_MESSAGE=成功しました' >> $GITHUB_ENV
         echo 'COLOR_CODE=green' >> $GITHUB_ENV
@@ -15,13 +23,6 @@ runs:
       run: |
         echo 'RESULT_MESSAGE=失敗しました' >> $GITHUB_ENV
         echo 'COLOR_CODE=red' >> $GITHUB_ENV
-      shell: bash
-
-    - name: test
-      run: |
-        gh run view '${{ github.run_id }}' --json status,conclusion
-      env:
-        GH_TOKEN: ${{ github.token }}
       shell: bash
 
     - name: Slack post
