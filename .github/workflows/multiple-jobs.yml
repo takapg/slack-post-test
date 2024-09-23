@@ -22,8 +22,25 @@ jobs:
       - name: Slack post workflow start
         uses: ./.github/actions/slack-post-workflow-start
 
-  slack-post-workflow-end:
+  job-1:
     needs: [slack-post-workflow-start]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Slack post job start
+        uses: ./.github/actions/slack-post-job-start
+
+      - name: Dummy step
+        run: sleep '${{ inputs.sleep-seconds }}'
+
+      - name: Slack post job end
+        if: always()
+        uses: ./.github/actions/slack-post-job-end
+
+  slack-post-workflow-end:
+    needs: [slack-post-workflow-start, job-1]
     runs-on: ubuntu-latest
     if: always()
     steps:
