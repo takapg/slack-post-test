@@ -12,14 +12,14 @@ runs:
   using: "composite"
   steps:
     - name: Set success environment variables
-      if: inputs.success
+      if: inputs.success == 'true'
       run: |
         echo 'RESULT_MESSAGE=成功しました' >> $GITHUB_ENV
         echo 'COLOR_CODE=green' >> $GITHUB_ENV
       shell: bash
 
     - name: Set failure environment variables
-      if: inputs.failure
+      if: inputs.failure == 'true'
       run: |
         echo 'RESULT_MESSAGE=失敗しました' >> $GITHUB_ENV
         echo 'COLOR_CODE=red' >> $GITHUB_ENV
