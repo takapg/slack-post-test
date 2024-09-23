@@ -14,7 +14,7 @@ runs:
     - name: Set success environment variables
       # if: inputs.success == 'true'
       run: |
-        echo '${{ toJSON(inputs) }}'
+        echo '${{ toJSON(jobs) }}'
         echo 'RESULT_MESSAGE=成功しました' >> $GITHUB_ENV
         echo 'COLOR_CODE=green' >> $GITHUB_ENV
       shell: bash
