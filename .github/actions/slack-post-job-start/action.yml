@@ -1,0 +1,10 @@
+name: Slack post job start
+
+runs:
+  using: "composite"
+  steps:
+    - name: Slack post
+      uses: ./.github/actions/slack-post
+      with:
+        text: '${{ github.job }} を開始しました'
+        color-code: blue
