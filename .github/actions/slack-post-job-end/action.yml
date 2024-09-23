@@ -6,10 +6,10 @@ runs:
     - name: Set parameters
       id: set-parameters
       run: |
-        if [ "${job.status}" == 'failure' ]; then
+        if [ "${{ job.status }}" == 'failure' ]; then
           echo 'result-message=失敗しました' >> $GITHUB_OUTPUT
           echo 'color-code=red' >> $GITHUB_OUTPUT
-        elif [ "${job.status}" == 'canceled' ]; then
+        elif [ "${{ job.status }}" == 'canceled' ]; then
           echo 'result-message=キャンセルされました' >> $GITHUB_OUTPUT
           echo 'color-code=gray' >> $GITHUB_OUTPUT
         else
