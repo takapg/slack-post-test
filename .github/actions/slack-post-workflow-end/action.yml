@@ -10,6 +10,7 @@ runs:
           gh run view '${{ github.run_id }}' --json jobs \
             | jq -c '[.jobs[].steps[].conclusion]'
         )
+        echo "step_conclusions: ${step_conclusions}"
 
         if [[ "${step_conclusions}" =~ 'failure' ]]; then
           echo 'result-message=失敗しました' >> $GITHUB_OUTPUT
