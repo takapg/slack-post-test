@@ -15,7 +15,7 @@ runs:
       # if: inputs.success == 'true'
       run: |
         gh run view '${{ github.run_id }}' --json jobs \
-          | jq -r '.jobs[].steps[].conclusion'
+          | jq -r '[.jobs[].steps[].conclusion]'
         echo 'RESULT_MESSAGE=成功しました' >> $GITHUB_ENV
         echo 'COLOR_CODE=green' >> $GITHUB_ENV
       env:
