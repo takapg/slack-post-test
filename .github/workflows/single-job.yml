@@ -31,6 +31,3 @@ jobs:
       - name: Slack post workflow end
         if: always()
         uses: ./.github/actions/slack-post-workflow-end
-        with:
-          success: true
-          failure: false
